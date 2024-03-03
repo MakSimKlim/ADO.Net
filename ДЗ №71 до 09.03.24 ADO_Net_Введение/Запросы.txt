@@ -1,0 +1,40 @@
+/*заполнение таблицы данными*/
+INSERT INTO [dbo].[Vegetable&Fruit] (Title, Typing, Colour, Calories)
+VALUES 
+('Яблоко', 'Фрукт', 'Красный', 52),
+('Банан', 'Фрукт', 'Желтый', 96),
+('Виноград', 'Фрукт', 'Зеленый', 69),
+('Апельсин', 'Фрукт', 'Оранжевый', 43),
+('Груша', 'Фрукт', 'Зеленый', 57),
+('Морковь', 'Овощ', 'Оранжевый', 41),
+('Брокколи', 'Овощ', 'Зеленый', 55),
+('Картофель', 'Овощ', 'Коричневый', 77),
+('Помидор', 'Овощ', 'Красный', 18),
+('Огурец', 'Овощ', 'Зеленый', 15),
+('Перец', 'Овощ', 'Красный', 40),
+('Капуста', 'Овощ', 'Зеленый', 25),
+('Сельдерей', 'Овощ', 'Зеленый', 16),
+('Свекла', 'Овощ', 'Красный', 43),
+('Лук', 'Овощ', 'Белый', 40),
+('Чеснок', 'Овощ', 'Белый', 149),
+('Гранат', 'Фрукт', 'Красный', 83),
+('Киви', 'Фрукт', 'Зеленый', 41),
+('Ананас', 'Фрукт', 'Желтый', 50),
+('Манго', 'Фрукт', 'Оранжевый', 60);
+
+/*Запросы*/
+SELECT * FROM VegetableFruitTable;// 1. Отображение всей информации из таблицы с овощами и фруктами
+SELECT Title FROM VegetableFruitTable;// 2. Отображение всех названий овощей и фруктов
+SELECT DISTINCT Colour FROM VegetableFruitTable;// 3. Отображение всех цветов
+SELECT MAX(Calories) FROM VegetableFruitTable;// 4. Показать максимальную калорийность
+SELECT MIN(Calories) FROM VegetableFruitTable;// 5. Показать минимальную калорийность
+SELECT AVG(Calories) FROM VegetableFruitTable;// 6. Показать среднюю калорийность
+SELECT COUNT(*) FROM VegetableFruitTable WHERE Typing = 'Овощ';// 7. Показать количество овощей
+SELECT COUNT(*) FROM VegetableFruitTable WHERE Typing = 'Фрукт';// 8. Показать количество фруктов
+SELECT COUNT(*) FROM VegetableFruitTable WHERE Colour = 'Зеленый';// 9. Показать количество овощей и фруктов заданного цвета
+SELECT Colour, COUNT(*) FROM VegetableFruitTable GROUP BY Colour; // 10. Показать количество овощей фруктов каждого цвета
+SELECT * FROM VegetableFruitTable WHERE Calories < 40;// 11. Показать овощи и фрукты с калорийностью ниже указанной
+SELECT * FROM VegetableFruitTable WHERE Calories > 40;// 12. Показать овощи и фрукты с калорийностью выше указанной
+SELECT * FROM VegetableFruitTable WHERE Calories BETWEEN 20 AND 40;// 13. Показать овощи и фрукты с калорийностью в указанном диапазоне
+SELECT * FROM VegetableFruitTable WHERE Colour IN ('Желтый', 'Красный'); // 14. Показать все овощи и фрукты, у которых цвет желтый или красный
+
