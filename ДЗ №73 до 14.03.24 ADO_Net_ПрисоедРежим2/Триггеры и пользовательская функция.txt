@@ -1,0 +1,90 @@
+-- Триггер проверяет остаток товара перед каждой продажей
+CREATE TRIGGER CheckQuantityBeforeSale
+ON Продажи
+FOR INSERT
+AS
+BEGIN
+    DECLARE @ТоварID int, @КоличествоПроданных int, @Остаток int
+
+    SELECT @ТоварID = ТоварID, @КоличествоПроданных = КоличествоПроданных FROM inserted
+
+    SELECT @Остаток = Количество FROM Товары WHERE ТоварID = @ТоварID
+
+    IF @КоличествоПроданных > @Остаток
+    BEGIN
+        RAISERROR ('Недостаточно товара на складе', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+
+--=====================================================================================================
+-- Триггер проверяет менеджера, существует он или нет
+
+CREATE TRIGGER CheckManagerBeforeSale
+ON Продажи
+FOR INSERT
+AS
+BEGIN
+    DECLARE @МенеджерID int
+
+    SELECT @МенеджерID = МенеджерID FROM inserted
+
+    IF NOT EXISTS (SELECT 1 FROM Менеджеры WHERE МенеджерID = @МенеджерID)
+    BEGIN
+        RAISERROR ('Менеджер с таким ID не существует', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+
+--=====================================================================================================
+-- Триггер проверяет товар, существует он или нет
+CREATE TRIGGER CheckProductBeforeSale
+ON Продажи
+FOR INSERT
+AS
+BEGIN
+    DECLARE @ТоварID int
+
+    SELECT @ТоварID = ТоварID FROM inserted
+
+    IF NOT EXISTS (SELECT 1 FROM Товары WHERE ТоварID = @ТоварID)
+    BEGIN
+        RAISERROR ('Товар с таким ID не существует', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+
+
+
+--=====================================================================================================
+-- Триггер проверяет фирму, существует она или нет
+CREATE TRIGGER CheckCompanyBeforeSale
+ON Продажи
+FOR INSERT
+AS
+BEGIN
+    DECLARE @ФирмаID int
+
+    SELECT @ФирмаID = ФирмаID FROM inserted
+
+    IF NOT EXISTS (SELECT 1 FROM Фирмы WHERE ФирмаID = @ФирмаID)
+    BEGIN
+        RAISERROR ('Фирма с таким ID не существует', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+--=====================================================================================================
+--пользовательская функция, которая вычисляет среднее количество товара по каждому типу канцтоваров
+
+CREATE FUNCTION GetAverageQuantityByType(@Тип nvarchar(50))
+RETURNS decimal(18, 2)
+AS
+BEGIN
+    DECLARE @averageQuantity decimal(18, 2)
+
+    SELECT @averageQuantity = AVG(Количество) 
+    FROM Товары 
+    WHERE Тип = @Тип
+
+    RETURN ISNULL(@averageQuantity, 0)
+END
