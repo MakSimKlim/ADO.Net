@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<students>
+  <student LastName="Chen" FirstName="Elena" GroupNumber="101" Scholarship="12864" />
+  <student LastName="Park" FirstName="Yuri" GroupNumber="101" Scholarship="2919" />
+</students>

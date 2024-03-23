@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<students>
+  <student LastName="Cato" FirstName="Petr" GroupNumber="103" Scholarship="3595" />
+  <student LastName="Cato" FirstName="Anastasiya" GroupNumber="102" Scholarship="16707" />
+  <student LastName="Park" FirstName="Yuri" GroupNumber="101" Scholarship="2919" />
+  <student LastName="Chen" FirstName="Evginya" GroupNumber="104" Scholarship="4944" />
+  <student LastName="Cato" FirstName="Ivan" GroupNumber="103" Scholarship="18143" />
+  <student LastName="Chen" FirstName="Ivan" GroupNumber="105" Scholarship="15643" />
+  <student LastName="Li" FirstName="Elizaveta" GroupNumber="103" Scholarship="16310" />
+  <student LastName="Li" FirstName="Danil" GroupNumber="104" Scholarship="16556" />
+</students>
