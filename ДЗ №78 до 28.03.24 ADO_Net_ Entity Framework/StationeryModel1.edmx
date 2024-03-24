@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище ФирмаКанцтоваровModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Менеджеры">
+          <Key>
+            <PropertyRef Name="МенеджерID" />
+          </Key>
+          <Property Name="МенеджерID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя" Type="varchar" MaxLength="100" />
+          <Property Name="Фамилия" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Продажи">
+          <Key>
+            <PropertyRef Name="ПродажаID" />
+          </Key>
+          <Property Name="ПродажаID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ТоварID" Type="int" />
+          <Property Name="МенеджерID" Type="int" />
+          <Property Name="ФирмаID" Type="int" />
+          <Property Name="КоличествоПроданных" Type="int" />
+          <Property Name="ЦенаЗаЕдиницу" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ДатаПродажи" Type="date" />
+        </EntityType>
+        <EntityType Name="Товары">
+          <Key>
+            <PropertyRef Name="ТоварID" />
+          </Key>
+          <Property Name="ТоварID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="varchar" MaxLength="100" />
+          <Property Name="Тип" Type="varchar" MaxLength="50" />
+          <Property Name="Количество" Type="int" />
+          <Property Name="Себестоимость" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Фирмы">
+          <Key>
+            <PropertyRef Name="ФирмаID" />
+          </Key>
+          <Property Name="ФирмаID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__Продажи__Менедже__35BCFE0A">
+          <End Role="Менеджеры" Type="Self.Менеджеры" Multiplicity="0..1" />
+          <End Role="Продажи" Type="Self.Продажи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Менеджеры">
+              <PropertyRef Name="МенеджерID" />
+            </Principal>
+            <Dependent Role="Продажи">
+              <PropertyRef Name="МенеджерID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Продажи__ТоварID__34C8D9D1">
+          <End Role="Товары" Type="Self.Товары" Multiplicity="0..1" />
+          <End Role="Продажи" Type="Self.Продажи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Товары">
+              <PropertyRef Name="ТоварID" />
+            </Principal>
+            <Dependent Role="Продажи">
+              <PropertyRef Name="ТоварID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Продажи__ФирмаID__36B12243">
+          <End Role="Фирмы" Type="Self.Фирмы" Multiplicity="0..1" />
+          <End Role="Продажи" Type="Self.Продажи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Фирмы">
+              <PropertyRef Name="ФирмаID" />
+            </Principal>
+            <Dependent Role="Продажи">
+              <PropertyRef Name="ФирмаID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ФирмаКанцтоваровModelContainer">
+          <EntitySet Name="Менеджеры" EntityType="Self.Менеджеры" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Продажи" EntityType="Self.Продажи" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Товары" EntityType="Self.Товары" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Фирмы" EntityType="Self.Фирмы" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Продажи__Менедже__35BCFE0A" Association="Self.FK__Продажи__Менедже__35BCFE0A">
+            <End Role="Менеджеры" EntitySet="Менеджеры" />
+            <End Role="Продажи" EntitySet="Продажи" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Продажи__ТоварID__34C8D9D1" Association="Self.FK__Продажи__ТоварID__34C8D9D1">
+            <End Role="Товары" EntitySet="Товары" />
+            <End Role="Продажи" EntitySet="Продажи" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Продажи__ФирмаID__36B12243" Association="Self.FK__Продажи__ФирмаID__36B12243">
+            <End Role="Фирмы" EntitySet="Фирмы" />
+            <End Role="Продажи" EntitySet="Продажи" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ФирмаКанцтоваровModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Менеджеры">
+          <Key>
+            <PropertyRef Name="МенеджерID" />
+          </Key>
+          <Property Name="МенеджерID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Фамилия" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Продажи" Relationship="Self.FK__Продажи__Менедже__35BCFE0A" FromRole="Менеджеры" ToRole="Продажи" />
+        </EntityType>
+        <EntityType Name="Продажи">
+          <Key>
+            <PropertyRef Name="ПродажаID" />
+          </Key>
+          <Property Name="ПродажаID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ТоварID" Type="Int32" />
+          <Property Name="МенеджерID" Type="Int32" />
+          <Property Name="ФирмаID" Type="Int32" />
+          <Property Name="КоличествоПроданных" Type="Int32" />
+          <Property Name="ЦенаЗаЕдиницу" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ДатаПродажи" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Менеджеры" Relationship="Self.FK__Продажи__Менедже__35BCFE0A" FromRole="Продажи" ToRole="Менеджеры" />
+          <NavigationProperty Name="Товары" Relationship="Self.FK__Продажи__ТоварID__34C8D9D1" FromRole="Продажи" ToRole="Товары" />
+          <NavigationProperty Name="Фирмы" Relationship="Self.FK__Продажи__ФирмаID__36B12243" FromRole="Продажи" ToRole="Фирмы" />
+        </EntityType>
+        <EntityType Name="Товары">
+          <Key>
+            <PropertyRef Name="ТоварID" />
+          </Key>
+          <Property Name="ТоварID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Тип" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Количество" Type="Int32" />
+          <Property Name="Себестоимость" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Продажи" Relationship="Self.FK__Продажи__ТоварID__34C8D9D1" FromRole="Товары" ToRole="Продажи" />
+        </EntityType>
+        <EntityType Name="Фирмы">
+          <Key>
+            <PropertyRef Name="ФирмаID" />
+          </Key>
+          <Property Name="ФирмаID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Продажи" Relationship="Self.FK__Продажи__ФирмаID__36B12243" FromRole="Фирмы" ToRole="Продажи" />
+        </EntityType>
+        <Association Name="FK__Продажи__Менедже__35BCFE0A">
+          <End Role="Менеджеры" Type="Self.Менеджеры" Multiplicity="0..1" />
+          <End Role="Продажи" Type="Self.Продажи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Менеджеры">
+              <PropertyRef Name="МенеджерID" />
+            </Principal>
+            <Dependent Role="Продажи">
+              <PropertyRef Name="МенеджерID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Продажи__ТоварID__34C8D9D1">
+          <End Role="Товары" Type="Self.Товары" Multiplicity="0..1" />
+          <End Role="Продажи" Type="Self.Продажи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Товары">
+              <PropertyRef Name="ТоварID" />
+            </Principal>
+            <Dependent Role="Продажи">
+              <PropertyRef Name="ТоварID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Продажи__ФирмаID__36B12243">
+          <End Role="Фирмы" Type="Self.Фирмы" Multiplicity="0..1" />
+          <End Role="Продажи" Type="Self.Продажи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Фирмы">
+              <PropertyRef Name="ФирмаID" />
+            </Principal>
+            <Dependent Role="Продажи">
+              <PropertyRef Name="ФирмаID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ФирмаКанцтоваровEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Менеджеры" EntityType="Self.Менеджеры" />
+          <EntitySet Name="Продажи" EntityType="Self.Продажи" />
+          <EntitySet Name="Товары" EntityType="Self.Товары" />
+          <EntitySet Name="Фирмы" EntityType="Self.Фирмы" />
+          <AssociationSet Name="FK__Продажи__Менедже__35BCFE0A" Association="Self.FK__Продажи__Менедже__35BCFE0A">
+            <End Role="Менеджеры" EntitySet="Менеджеры" />
+            <End Role="Продажи" EntitySet="Продажи" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Продажи__ТоварID__34C8D9D1" Association="Self.FK__Продажи__ТоварID__34C8D9D1">
+            <End Role="Товары" EntitySet="Товары" />
+            <End Role="Продажи" EntitySet="Продажи" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Продажи__ФирмаID__36B12243" Association="Self.FK__Продажи__ФирмаID__36B12243">
+            <End Role="Фирмы" EntitySet="Фирмы" />
+            <End Role="Продажи" EntitySet="Продажи" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ФирмаКанцтоваровModelContainer" CdmEntityContainer="ФирмаКанцтоваровEntities">
+          <EntitySetMapping Name="Менеджеры">
+            <EntityTypeMapping TypeName="ФирмаКанцтоваровModel.Менеджеры">
+              <MappingFragment StoreEntitySet="Менеджеры">
+                <ScalarProperty Name="МенеджерID" ColumnName="МенеджерID" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Продажи">
+            <EntityTypeMapping TypeName="ФирмаКанцтоваровModel.Продажи">
+              <MappingFragment StoreEntitySet="Продажи">
+                <ScalarProperty Name="ПродажаID" ColumnName="ПродажаID" />
+                <ScalarProperty Name="ТоварID" ColumnName="ТоварID" />
+                <ScalarProperty Name="МенеджерID" ColumnName="МенеджерID" />
+                <ScalarProperty Name="ФирмаID" ColumnName="ФирмаID" />
+                <ScalarProperty Name="КоличествоПроданных" ColumnName="КоличествоПроданных" />
+                <ScalarProperty Name="ЦенаЗаЕдиницу" ColumnName="ЦенаЗаЕдиницу" />
+                <ScalarProperty Name="ДатаПродажи" ColumnName="ДатаПродажи" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Товары">
+            <EntityTypeMapping TypeName="ФирмаКанцтоваровModel.Товары">
+              <MappingFragment StoreEntitySet="Товары">
+                <ScalarProperty Name="ТоварID" ColumnName="ТоварID" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Тип" ColumnName="Тип" />
+                <ScalarProperty Name="Количество" ColumnName="Количество" />
+                <ScalarProperty Name="Себестоимость" ColumnName="Себестоимость" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Фирмы">
+            <EntityTypeMapping TypeName="ФирмаКанцтоваровModel.Фирмы">
+              <MappingFragment StoreEntitySet="Фирмы">
+                <ScalarProperty Name="ФирмаID" ColumnName="ФирмаID" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
