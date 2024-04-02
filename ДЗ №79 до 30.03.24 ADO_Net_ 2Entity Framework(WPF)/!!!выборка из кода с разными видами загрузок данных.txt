@@ -1,0 +1,26 @@
+ private void LoadDataGoods()
+        {
+            var goods = db.Товары.ToList(); // Отложенная загрузка. Загрузка данных из таблицы “Товары” происходит при обращении к данным, то есть когда вы обращаетесь к GoodsComboBox.ItemsSource
+            GoodsComboBox.ItemsSource = goods;
+           
+        }
+
+        private void LoadDataFirms()
+        {
+            var firms = db.Фирмы.Include(f => f.Продажи).ToList(); // Безотложная загрузка. Здесь мы сразу загружаем связанные данные (Продажи) вместе с основными данными (Фирмы) с помощью метода Include().
+            FirmsComboBox.ItemsSource = firms;
+        }
+        private void LoadDataManagersFamily()
+        {
+            var managersFamily = db.Менеджеры.ToList();
+            ManagersFamilyComboBox.ItemsSource = managersFamily;
+        }
+        private void LoadDataSales()
+        {
+            var sales = db.Продажи.ToList();
+            foreach (var sale in sales)
+            {
+                db.Entry(sale).Reference(s => s.Товары).Load(); // Явная загрузка. Здесь мы явно загружаем связанные данные (Товары) с помощью метода Load().
+            }
+            SalesComboBox.ItemsSource = sales;
+        }
