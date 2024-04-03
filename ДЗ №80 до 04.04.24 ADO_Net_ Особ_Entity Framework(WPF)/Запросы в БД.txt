@@ -1,0 +1,140 @@
+--==================== СОЗДАНИЕ БАЗЫ ДАННЫХ И ТАБЛИЦ ========================================
+
+CREATE DATABASE BookLibrary;
+
+USE BooksLibrary;
+
+-- Создание таблицы Authors
+CREATE TABLE Authors (
+    IDauthor INT PRIMARY KEY,
+    AuthorName NVARCHAR(100),
+    AuthorSurname NVARCHAR(100)
+);
+
+-- Создание таблицы Statuses
+CREATE TABLE Statuses (
+    IDstatus INT PRIMARY KEY,
+    TitleStatus NVARCHAR(50)
+);
+
+-- Создание таблицы Books
+CREATE TABLE Books (
+    IDbook INT PRIMARY KEY,
+    BookTitle NVARCHAR(255) NOT NULL,
+    IDauthor INT,
+    NumberOfPagesRead INT,
+    NumberOfPages INT NOT NULL,
+    IDstatus INT NOT NULL,
+    Rating INT,
+    Cover VARBINARY(MAX),
+    FOREIGN KEY (IDauthor) REFERENCES Authors(IDauthor),
+    FOREIGN KEY (IDstatus) REFERENCES Statuses(IDstatus)
+);
+
+--==================== СОЗДАНИЕ ТРИГГЕРОВ ========================================
+
+-- Создание триггера для проверки количества прочитанных страниц
+CREATE TRIGGER trg_CheckPages ON Books
+FOR UPDATE AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted i JOIN deleted d ON i.IDbook = d.IDbook WHERE i.NumberOfPagesRead > i.NumberOfPages)
+    BEGIN
+        RAISERROR ('Нельзя выставить больше прочитанных страниц, чем всего страниц в книге.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+
+-- Создание триггера для установки статуса "Read"
+CREATE TRIGGER trg_SetReadStatus ON Books
+FOR UPDATE AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted i JOIN deleted d ON i.IDbook = d.IDbook WHERE i.IDstatus = 3)
+    BEGIN
+        UPDATE Books SET NumberOfPagesRead = NumberOfPages WHERE IDbook IN (SELECT IDbook FROM inserted);
+    END
+END;
+
+-- Создание триггера для проверки рейтинга
+CREATE TRIGGER trg_CheckRating ON Books
+FOR UPDATE AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted i JOIN deleted d ON i.IDbook = d.IDbook WHERE i.Rating < 1 OR i.Rating > 10)
+    BEGIN
+        RAISERROR ('Нельзя выставить рейтинг ниже 1 или больше 10.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+
+--==================== ЗАПОЛНЕНИЕ ТАБЛИЦ ДАННЫМИ ========================================
+
+-- Заполнение таблицы Authors
+INSERT INTO Authors (IDauthor, AuthorName, AuthorSurname)
+VALUES (1, 'George', 'Orwell'),
+       (2, 'J.K.', 'Rowling'),
+       (3, 'J.R.R.', 'Tolkien'),
+       (4, 'F. Scott', 'Fitzgerald'),
+       (5, 'Harper', 'Lee');
+
+-- Заполнение таблицы Statuses
+INSERT INTO Statuses (IDstatus, TitleStatus)
+VALUES (1, 'Planned'),
+       (2, 'StillRead'),
+       (3, 'AlreadyRead'),
+       (4, 'Dropped');
+
+-- Заполнение таблицы Books
+INSERT INTO Books (IDbook, BookTitle, IDauthor, NumberOfPagesRead, NumberOfPages, IDstatus, Rating)
+VALUES (1, '1984', 1, 200, 328, 2, 9), -- Still reading
+       (2, 'Harry Potter and the Philosopher Stone', 2, 223, 223, 3, 8), -- Already read
+       (3, 'The Lord of the Rings', 3, 0, 1178, 1, NULL), -- Planned to read
+       (4, 'The Great Gatsby', 4, 50, 180, 4, 6), -- Dropped
+       (5, 'To Kill a Mockingbird', 5, 281, 281, 2, 10); -- Still read
+
+-- Загрузка изображений в таблицу Book
+DECLARE @imgPath NVARCHAR(256);
+SET @imgPath = 'E:\Родители\Папа\ADO.NET\Дом задания\ДЗ №80 до 04.04.24 ADO_Net_ОсобEntityFramework(WPF)\';
+
+DECLARE @sql NVARCHAR(MAX);
+
+-- Для Img1.jpg и книги с IDbook = 1
+SET @sql = 'UPDATE Books SET Cover= (SELECT * FROM OPENROWSET(BULK N''' + @imgPath + 'Img1.jpg'', SINGLE_BLOB) AS Image) WHERE IDbook  = 1';
+EXEC sp_executesql @sql;
+
+-- Для Img2.jpg и книги с IDbook = 2
+SET @sql = 'UPDATE Books SET Cover= (SELECT * FROM OPENROWSET(BULK N''' + @imgPath + 'Img2.jpg'', SINGLE_BLOB) AS Image) WHERE IDbook  = 2';
+EXEC sp_executesql @sql;
+
+-- Для Img3.jpg и книги с IDbook = 3
+SET @sql = 'UPDATE Books SET Cover= (SELECT * FROM OPENROWSET(BULK N''' + @imgPath + 'Img3.jpg'', SINGLE_BLOB) AS Image) WHERE IDbook  = 3';
+EXEC sp_executesql @sql;
+
+-- Для Img4.jpg и книги с IDbook = 4
+SET @sql = 'UPDATE Books SET Cover= (SELECT * FROM OPENROWSET(BULK N''' + @imgPath + 'Img4.jpg'', SINGLE_BLOB) AS Image) WHERE IDbook  = 4';
+EXEC sp_executesql @sql;
+
+-- Для Img5.jpg и книги с IDbook = 5
+SET @sql = 'UPDATE Books SET Cover= (SELECT * FROM OPENROWSET(BULK N''' + @imgPath + 'Img5.jpg'', SINGLE_BLOB) AS Image) WHERE IDbook  = 5';
+EXEC sp_executesql @sql;
+
+--==================== ВЫВОД ЗНАЧЕНИЙ ========================================
+
+-- Вывод значений из таблицы Authors
+SELECT * FROM Authors;
+-- Вывод значений из таблицы Statuses
+SELECT * FROM Statuses;
+-- Вывод значений из таблицы Books
+SELECT * FROM Books;
+--запрос на вывод информации о книгах в базе данных
+SELECT 
+    B.BookTitle + ', ' + A.AuthorName + ' ' + A.AuthorSurname AS 'Название и автор',
+    B.NumberOfPages AS 'Количество страниц',
+    S.TitleStatus AS 'Статус',
+    B.Rating AS 'Рейтинг'
+FROM 
+    Books B
+JOIN 
+    Authors A ON B.IDauthor = A.IDauthor
+JOIN 
+    Statuses S ON B.IDstatus = S.IDstatus;
