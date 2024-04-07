@@ -38,12 +38,14 @@
         <TextBox  x:Name="PageReadTextBox" Grid.Row="2" Grid.Column="2" />
         <Label Grid.Row="1" Grid.Column="3" Content="Number Of Page" VerticalAlignment="Bottom" />
         <TextBox x:Name="PageTextBox" Grid.Row="2" Grid.Column="3" />
+        
         <Label Grid.Row="1" Grid.Column="4" Content="Status" VerticalAlignment="Bottom" />
-        <TextBox x:Name="StatusTextBox" Grid.Row="2" Grid.Column="4" />
-        <Label Grid.Row="1" Grid.Column="5" Content="Rating:" VerticalAlignment="Bottom" />
+        <ComboBox x:Name="StatusComboBox" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="StatusComboBox_SelectionChanged" Width="164" Height="35"/>
+                
+        <Label Grid.Row="1" Grid.Column="5" Content="Rating (1-10):" VerticalAlignment="Bottom" />
         <TextBox x:Name="RatingTextBox" Grid.Row="2" Grid.Column="5" />
         <Label Grid.Row="1" Grid.Column="6" Content="Cover:" VerticalAlignment="Bottom" />
-        <Image x:Name="CoverImage" Grid.Row="2" Grid.Column="6" Width="150" Height="200" MouseDown="WallImage_MouseDown" Grid.RowSpan="6"/>
+        <Image x:Name="CoverImage" Grid.Row="2" Grid.Column="6" Width="150" Height="200" MouseDown="CoverImage_MouseDown" Grid.RowSpan="6"/>
         <Label Grid.Row="3" Grid.Column="2" Content="Previous Book" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
         <Button x:Name="PreviousButton" Content="&lt;&lt;&lt;" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="70" Click="PreviousButton_Click"/>
         <Label Grid.Row="3" Grid.Column="4" Content="Next Book" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
@@ -54,5 +56,9 @@
         <Button x:Name="CorrectButton" Content="Correct" Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="70" Click="CorrectButton_Click"/>
         <Label Grid.Row="5" Grid.Column="4" Content="Download Cover" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         <Button x:Name="DownloadCoverButton" Content="Download" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="70" Click="DownloadCoverButton_Click"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="Clear All Fields" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <Button x:Name="ClearButton" Content="Clear" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="70" Click="ClearButton_Click"/>
+        
+
     </Grid>
 </Window>
